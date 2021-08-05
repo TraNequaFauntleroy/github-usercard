@@ -59,6 +59,7 @@ const followersArray = [];
 */
 
 function cardMaker(gitData) {
+  const card = document.createElement('div');
   const image = document.createElement('img');
   const cardInfo = document.createElement('div');
   const userTitle = document.createElement('h3');
@@ -74,10 +75,11 @@ function cardMaker(gitData) {
 
   image.src = gitData.avatar_url;
   link.href = gitData.html_url;
+  link.textContent = gitData.html_url
   cardInfo.textContent = gitData.name;
   userName.textContent = gitData.login; 
   location.textContent = `Location: ${gitData.location}`;
-  profile.textContent = `Profile:`
+  profile.textContent = `Profile: `
   followers.textContent = `Followers: ${gitData.followers}`;
   following.textContent = `Following: ${gitData.following}`;
   bio.textContent = `Bio: ${gitData.bio}`;
@@ -85,9 +87,11 @@ function cardMaker(gitData) {
   cardInfo.classList.add('card-info');
   userTitle.classList.add('name');
   userName.classList.add('username');
+  card.classList.add('card');
 
-  cards.appendChild(image);
-  cards.appendChild(cardInfo);
+  cards.appendChild(card);
+  card.appendChild(image);
+  card.appendChild(cardInfo);
   cardInfo.appendChild(userTitle);
   cardInfo.appendChild(userName);
   cardInfo.appendChild(location);
@@ -103,14 +107,17 @@ function cardMaker(gitData) {
 function getCards(name) {
   axios.get(`https://api.github.com/users/${name}`)
   .then(response => {
-    response.data.forEach(data =>{
-      const newCard = cardMaker(data);
+      const newCard = cardMaker(response.data);
       document.querySelector('.cards').appendChild(newCard);
-    })
+      console.log(response.data);
   })
+  .catch(error => {
+    console.log('you are doing something wrong!')
+    })
 }
 
-getCards('tranequafauntleroy')
+getCards('tranequafauntleroy');
+
 /*
   List of LS Instructors Github username's:
     tetondan
