@@ -1,9 +1,17 @@
+import axios from 'axios'
+
 /*
   STEP 1: using axios, send a GET request to the following URL
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
-
+axios.get('https://api.github.com/users/tranequafauntleroy')
+.then(response => {
+  console.log(response)
+})
+.catch(err => {
+  console.log(err)
+})
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
@@ -50,6 +58,59 @@ const followersArray = [];
     </div>
 */
 
+function cardMaker(gitData) {
+  const image = document.createElement('img');
+  const cardInfo = document.createElement('div');
+  const userTitle = document.createElement('h3');
+  const userName = document.createElement('p');
+  const location = document.createElement('p');
+  const profile = document.createElement('p');
+  const link = document.createElement('a');
+  const followers = document.createElement('p');
+  const following = document.createElement('p');
+  const bio = document.createElement('p');
+
+  const cards = document.querySelector('.cards');
+
+  image.src = gitData.avatar_url;
+  link.href = gitData.html_url;
+  cardInfo.textContent = gitData.name;
+  userName.textContent = gitData.login; 
+  location.textContent = `Location: ${gitData.location}`;
+  profile.textContent = `Profile:`
+  followers.textContent = `Followers: ${gitData.followers}`;
+  following.textContent = `Following: ${gitData.following}`;
+  bio.textContent = `Bio: ${gitData.bio}`;
+
+  cardInfo.classList.add('card-info');
+  userTitle.classList.add('name');
+  userName.classList.add('username');
+
+  cards.appendChild(image);
+  cards.appendChild(cardInfo);
+  cardInfo.appendChild(userTitle);
+  cardInfo.appendChild(userName);
+  cardInfo.appendChild(location);
+  cardInfo.appendChild(profile);
+  profile.appendChild(link);
+  cardInfo.appendChild(followers);
+  cardInfo.appendChild(following);
+  cardInfo.appendChild(bio);
+  
+  return cards;
+}
+
+function getCards(name) {
+  axios.get(`https://api.github.com/users/${name}`)
+  .then(response => {
+    response.data.forEach(data =>{
+      const newCard = cardMaker(data);
+      document.querySelector('.cards').appendChild(newCard);
+    })
+  })
+}
+
+getCards('tranequafauntleroy')
 /*
   List of LS Instructors Github username's:
     tetondan
