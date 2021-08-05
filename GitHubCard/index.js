@@ -36,7 +36,7 @@ axios.get('https://api.github.com/users/tranequafauntleroy')
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = [ 'tetondan','dustinmyers','justsml','luishrd','bigknell'];
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -117,6 +117,14 @@ function getCards(name) {
 }
 
 getCards('tranequafauntleroy');
+
+const newCard = followersArray.map(user => {
+  return getCards(user)
+})
+
+newCard.forEach(user =>{
+  document.querySelector('.card').appendChild(user)
+})
 
 /*
   List of LS Instructors Github username's:
